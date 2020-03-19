@@ -33,13 +33,20 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 从 request 中获取参数 username，password，type
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         String type = req.getParameter("type");
-        Object user = loginService.login(username,password,type);
 
+        // 调用登陆业务，获取返回结果
+        Object user = loginService.login(username, password, type);
+
+        // 用户登陆成功
         if (user != null) {
+            // 获取 session，用来保存登陆信息
             HttpSession session = req.getSession();
+
+            // 判断登陆者的类型
             switch (type) {
                 case "admin":
                     Admin admin = (Admin) user;
@@ -54,7 +61,7 @@ public class LoginServlet extends HttpServlet {
                 default:
                     break;
             }
-        } else {
+        } else { // 用户登陆失败
             resp.sendRedirect("/login.jsp");
         }
     }

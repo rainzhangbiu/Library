@@ -9,6 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * @author zyyy
+ */
 public class AdminRepositoryImpl implements AdminRepository {
     @Override
     public Admin login(String username, String password) {

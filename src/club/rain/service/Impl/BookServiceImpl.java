@@ -17,15 +17,20 @@ import java.util.List;
  * @author zyyy
  */
 public class BookServiceImpl implements BookService {
+    /**
+     * 每页保存的最大书籍信息条数
+     */
     private final int LIMIT = 6;
+
     private BookRepository bookRepository = new BookRepositoryImpl();
     private BorrowRepository borrowRepository = new BorrowRepositoryImpl();
 
     @Override
     public int getCount() {
         int count = bookRepository.getCount();
-        int pages = 0;
-        if ((count % LIMIT )== 0 ) {
+        // 总页数
+        int pages;
+        if ((count % LIMIT) == 0) {
             pages = count / 6;
         } else {
             pages = count / 6 + 1;
@@ -36,8 +41,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findAllBooks(int page) {
         int index = (page - 1) * LIMIT;
-        List<Book> books = bookRepository.findAllBooks(index, LIMIT);
-        return books;
+        return bookRepository.findAllBooks(index, LIMIT);
     }
 
     @Override
@@ -52,6 +56,7 @@ public class BookServiceImpl implements BookService {
         calendar.set(Calendar.DAY_OF_YEAR, dates);
         Date date2 = calendar.getTime();
         String returnTime = simpleDateFormat.format(date2);
+
         borrowRepository.insert(bookId,readerId,borrowTime,returnTime,null,0);
     }
 }

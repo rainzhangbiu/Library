@@ -1,6 +1,5 @@
 package club.rain.repository.Impl;
 
-import club.rain.repository.BookRepository;
 import club.rain.repository.BorrowRepository;
 import club.rain.utils.JDBCTools;
 
@@ -8,6 +7,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * \
+ *
+ * @author zyyy
+ */
 public class BorrowRepositoryImpl implements BorrowRepository {
     @Override
     public void insert(Integer bookId, Integer readerId, String borrowTime, String returnTime, Integer adminId, Integer statement) {

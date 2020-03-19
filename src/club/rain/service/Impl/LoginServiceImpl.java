@@ -15,10 +15,15 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public Object login(String username, String password, String type) {
+        // 返回值，既有可能是 Reader，也可能是 Admin，所以使用 Object 类
         Object object = null;
-        if ("reader".equals(type)) {
+
+        // 判断登陆类型
+        String reader = "reader";
+        String admin = "admin";
+        if (reader.equals(type)) {
             object = readerRepository.login(username, password);
-        } else if ("admin".equals(type)) {
+        } else if (admin.equals(type)) {
             object = adminRepository.login(username, password);
         }
         return object;

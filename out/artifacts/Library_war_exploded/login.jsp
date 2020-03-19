@@ -5,13 +5,16 @@
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>登录</title>
 </head>
+
 <link rel="icon" href="images/search.gif" type="img/x-ico" />
 <link href="css/login.css" type="text/css" rel="stylesheet">
 <script type="text/javascript" src="<%=path%>/js/jquery-3.3.1.min.js"></script>
+
 <body>
 	<div id="top"></div> 
 	<div id="main">
