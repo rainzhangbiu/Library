@@ -1,5 +1,9 @@
 package club.rain.repository;
 
+import club.rain.entity.BorrowInfo;
+
+import java.util.List;
+
 /**
  * @author zyyy
  */
@@ -15,4 +19,12 @@ public interface BorrowRepository {
      * @param statement  当前图书状态
      */
     void insert(Integer bookId, Integer readerId, String borrowTime, String returnTime, Integer adminId, Integer statement);
+
+    /**
+     * 根据用户 id 查询用户的借阅信息
+     *
+     * @param readerId 用户 id
+     * @return 返回一个 BorrowInfo 集合
+     */
+    List<BorrowInfo> findBorrowInfo(Integer readerId);
 }

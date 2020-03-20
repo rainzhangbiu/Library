@@ -1,6 +1,7 @@
 package club.rain.service.Impl;
 
 import club.rain.entity.Book;
+import club.rain.entity.BorrowInfo;
 import club.rain.repository.BookRepository;
 import club.rain.repository.BorrowRepository;
 import club.rain.repository.Impl.BookRepositoryImpl;
@@ -57,6 +58,11 @@ public class BookServiceImpl implements BookService {
         Date date2 = calendar.getTime();
         String returnTime = simpleDateFormat.format(date2);
 
-        borrowRepository.insert(bookId,readerId,borrowTime,returnTime,null,0);
+        borrowRepository.insert(bookId, readerId, borrowTime, returnTime, null, 0);
+    }
+
+    @Override
+    public List<BorrowInfo> findBorrowInfo(Integer readerId) {
+        return borrowRepository.findBorrowInfo(readerId);
     }
 }

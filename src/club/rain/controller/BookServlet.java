@@ -1,6 +1,7 @@
 package club.rain.controller;
 
 import club.rain.entity.Book;
+import club.rain.entity.BorrowInfo;
 import club.rain.entity.Reader;
 import club.rain.service.BookService;
 import club.rain.service.Impl.BookServiceImpl;
@@ -63,10 +64,14 @@ public class BookServlet extends HttpServlet {
                 String bookStr = req.getParameter("bookid");
                 Integer bookId = Integer.parseInt(bookStr);
                 // 获取借阅人 id
-                HttpSession session1 =req.getSession();
+                HttpSession session1 = req.getSession();
                 Reader reader = (Reader) session1.getAttribute("reader");
                 // 调用添加借阅信息业务
                 bookService.addBorrow(bookId, reader.getId());
+                List<BorrowInfo> borrowInfos = bookService.findBorrowInfo(reader.getId());
+                session1.setAttribute("list", borrowInfos);
+                resp.sendRedirect("/borrow.jsp");
+                int i = 0;
                 break;
 
             default:

@@ -56,6 +56,7 @@ public class LoginServlet extends HttpServlet {
                 case "reader":
                     Reader reader = (Reader) user;
                     session.setAttribute("reader", reader);
+                    // page = 1 为第一次进入 book 是必须的参数
                     resp.sendRedirect("/book?page=1");
                     break;
                 default:

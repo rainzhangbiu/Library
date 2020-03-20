@@ -27,6 +27,12 @@ public class Book {
 
     private Integer abled;
 
+    public Book(String name, String author, String publish) {
+        this.name = name;
+        this.author = author;
+        this.publish = publish;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -1,6 +1,7 @@
 package club.rain.service;
 
 import club.rain.entity.Book;
+import club.rain.entity.BorrowInfo;
 
 import java.util.List;
 
@@ -31,4 +32,12 @@ public interface BookService {
      * @param readerId 借阅人 id
      */
     void addBorrow(Integer bookId, Integer readerId);
+
+    /**
+     * 根据用户 id 查询借阅信息
+     *
+     * @param readerId 用户 id
+     * @return 借阅信息集合
+     */
+    List<BorrowInfo> findBorrowInfo(Integer readerId);
 }
