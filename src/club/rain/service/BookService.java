@@ -37,7 +37,16 @@ public interface BookService {
      * 根据用户 id 查询借阅信息
      *
      * @param readerId 用户 id
+     * @param page     当前页数
      * @return 借阅信息集合
      */
-    List<BorrowInfo> findBorrowInfo(Integer readerId);
+    List<BorrowInfo> findBorrowInfo(Integer readerId, Integer page);
+
+    /**
+     * 查询当前用户借阅书籍总数
+     *
+     * @param readerId 读者 id
+     * @return 总借阅信息数
+     */
+    int getCount(Integer readerId);
 }

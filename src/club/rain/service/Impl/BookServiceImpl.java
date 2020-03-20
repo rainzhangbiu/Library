@@ -62,7 +62,21 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BorrowInfo> findBorrowInfo(Integer readerId) {
-        return borrowRepository.findBorrowInfo(readerId);
+    public List<BorrowInfo> findBorrowInfo(Integer readerId, Integer page) {
+        int index = (page - 1) * LIMIT;
+        return borrowRepository.findBorrowInfo(readerId, index, LIMIT);
+    }
+
+    @Override
+    public int getCount(Integer readerId) {
+        int count = borrowRepository.getCount(readerId);
+        // 总页数
+        int pages;
+        if ((count % LIMIT) == 0) {
+            pages = count / 6;
+        } else {
+            pages = count / 6 + 1;
+        }
+        return pages;
     }
 }

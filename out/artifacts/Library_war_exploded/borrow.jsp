@@ -95,16 +95,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<td>${borrow.returnTime}</td>
 					<td>
 						<c:if test="${borrow.state == 0}">
-							<font color="black">未审核</font>
+							<span style="color: black; ">未审核</span>
 						</c:if>
 						<c:if test="${borrow.state == 1}">
-							<font color="green">审核通过</font>
+							<span style="color: green; ">审核通过</span>
 						</c:if>
 						<c:if test="${borrow.state == 2}">
-							<font color="red">未通过</font>
+							<span style="color: red; ">未通过</span>
 						</c:if>
 						<c:if test="${borrow.state == 3}">
-							<font color="yellow">已归还</font>
+							<span style="color: blue; ">已归还</span>
 						</c:if>
 					</td>
 				</tr>

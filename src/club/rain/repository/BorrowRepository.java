@@ -24,7 +24,17 @@ public interface BorrowRepository {
      * 根据用户 id 查询用户的借阅信息
      *
      * @param readerId 用户 id
+     * @param index    当前页面
+     * @param limit    每个页面数据量
      * @return 返回一个 BorrowInfo 集合
      */
-    List<BorrowInfo> findBorrowInfo(Integer readerId);
+    List<BorrowInfo> findBorrowInfo(Integer readerId, Integer index, int limit);
+
+    /**
+     * 根据 id 获取用户借阅书籍总数
+     *
+     * @param readerId 用户 id
+     * @return 书籍总数
+     */
+    int getCount(Integer readerId);
 }

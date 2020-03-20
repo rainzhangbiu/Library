@@ -19,6 +19,7 @@ import java.util.List;
 /**
  * @author zyyy
  */
+
 @WebServlet("/book")
 public class BookServlet extends HttpServlet {
     private BookService bookService = new BookServiceImpl();
@@ -36,6 +37,9 @@ public class BookServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // 功能参数，如果没有该参数默认查询书籍
         String method = req.getParameter("method");
+        // 获得 session
+        HttpSession session = req.getSession();
+
         if (method == null) {
             method = "findAllBooks";
         }
@@ -45,8 +49,7 @@ public class BookServlet extends HttpServlet {
                 // 获取当前页数。并且转化为 int 类型
                 String pageStr = req.getParameter("page");
                 int page = Integer.parseInt(pageStr);
-                // 获取 session
-                HttpSession session = req.getSession();
+
                 // 调用查询书籍业务，保存当前页面书籍信息
                 List<Book> books = bookService.findAllBooks(page);
                 // 将书籍信息、每页书籍数量、当前页数、总页数装入 session 中
@@ -63,15 +66,29 @@ public class BookServlet extends HttpServlet {
                 // 获取被借书 id
                 String bookStr = req.getParameter("bookid");
                 Integer bookId = Integer.parseInt(bookStr);
-                // 获取借阅人 id
-                HttpSession session1 = req.getSession();
-                Reader reader = (Reader) session1.getAttribute("reader");
+                // 获取借阅人 reader 对象
+                Reader reader = (Reader) session.getAttribute("reader");
                 // 调用添加借阅信息业务
                 bookService.addBorrow(bookId, reader.getId());
-                List<BorrowInfo> borrowInfos = bookService.findBorrowInfo(reader.getId());
-                session1.setAttribute("list", borrowInfos);
+                // 跳转到借阅信息界面
+                resp.sendRedirect("/book?method=findAllBorrow&page=1");
+
+                break;
+
+            case "findAllBorrow":
+                // 页数
+                String pageStr1 = req.getParameter("page");
+                int page1 = Integer.parseInt(pageStr1);
+                // 获取借阅人 reader 对象
+                reader = (Reader) session.getAttribute("reader");
+                List<BorrowInfo> borrowInfos = bookService.findBorrowInfo(reader.getId(), page1);
+
+                session.setAttribute("list", borrowInfos);
+                session.setAttribute("dataPerPage", 6);
+                session.setAttribute("currentPage", page1);
+                session.setAttribute("pages", bookService.getCount(reader.getId()));
+
                 resp.sendRedirect("/borrow.jsp");
-                int i = 0;
                 break;
 
             default:

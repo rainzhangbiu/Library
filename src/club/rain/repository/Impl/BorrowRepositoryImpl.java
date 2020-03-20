@@ -39,15 +39,17 @@ public class BorrowRepositoryImpl implements BorrowRepository {
     }
 
     @Override
-    public List<BorrowInfo> findBorrowInfo(Integer readerId) {
+    public List<BorrowInfo> findBorrowInfo(Integer readerId, Integer index, int limit) {
         Connection connection = JDBCTools.getConnection();
-        String sql = "select br.id,b.name,b.author,b.publish,br.borrowtime,br.returntime,r.name,r.tel,r.cardid,br.state  from borrow br,reader r,book b where r.id = ? and br.readerid = r.id and br.bookid = b.id;";
+        String sql = "select br.id,b.name,b.author,b.publish,br.borrowtime,br.returntime,r.name,r.tel,r.cardid,br.state  from borrow br,reader r,book b where r.id = ? and br.readerid = r.id and br.bookid = b.id limit ?,?;";
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         List<BorrowInfo> borrowInfos = new ArrayList<>();
         try {
             statement = connection.prepareStatement(sql);
             statement.setInt(1, readerId);
+            statement.setInt(2, index);
+            statement.setInt(3, limit);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 borrowInfos.add(new BorrowInfo(resultSet.getInt(1),
@@ -63,5 +65,27 @@ public class BorrowRepositoryImpl implements BorrowRepository {
             JDBCTools.release(connection, statement, resultSet);
         }
         return borrowInfos;
+    }
+
+    @Override
+    public int getCount(Integer readerId) {
+        Connection connection = JDBCTools.getConnection();
+        String sql = "select count(*) from borrow br,reader r where r.id = ? and br.readerid = r.id;";
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        int count = 0;
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, readerId);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCTools.release(connection, statement, resultSet);
+        }
+        return count;
     }
 }

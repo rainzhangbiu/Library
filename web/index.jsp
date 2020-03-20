@@ -55,24 +55,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		})
 	</script>
   </head>
-  
+
   <body>
   <%@ include file="top.jsp" %>
 
-  	<div id="main">
-		<div class="navigation">
-				当前位置:&nbsp;&nbsp;<a href="book.do">首页</a>
-				<div id="readerBlock">欢迎回来&nbsp;:<a href="/book?method=findAllBorrow&page=1">${sessionScope.reader.name }</a>&nbsp;<a href="/logout">注销</a></div>
-		</div>
-		<div class="img_block">
-			<img src="images/main_booksort.gif" class="img" />
-		</div>
-		
-		<table class="table" cellspacing="0">
-			<tr>
-				<td>编号</td>
-				<td>图书名称</td>
-				<td>作者</td>
+  <div id="main">
+	  <div class="navigation">
+		  当前位置:&nbsp;&nbsp;<a href="/book?page=1">首页</a>
+		  <div id="readerBlock">欢迎回来&nbsp;:<a href="/book?method=findAllBorrow&page=1">${sessionScope.reader.name}</a>&nbsp;<a
+				  href="/logout">注销</a></div>
+	  </div>
+	  <div class="img_block">
+		  <img src="images/main_booksort.gif" class="img"/>
+	  </div>
+
+	  <table class="table" cellspacing="0">
+		  <tr>
+			  <td>编号</td>
+			  <td>图书名称</td>
+			  <td>作者</td>
 				<td>出版社</td>
 				<td>图书页数</td>
 				<td>定价(元)</td>
