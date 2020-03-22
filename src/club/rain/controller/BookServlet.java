@@ -87,7 +87,6 @@ public class BookServlet extends HttpServlet {
                 session.setAttribute("dataPerPage", 6);
                 session.setAttribute("currentPage", page1);
                 session.setAttribute("pages", bookService.getCount(reader.getId()));
-
                 resp.sendRedirect("/borrow.jsp");
                 break;
 

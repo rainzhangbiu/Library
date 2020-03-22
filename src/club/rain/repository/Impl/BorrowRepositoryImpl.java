@@ -42,29 +42,7 @@ public class BorrowRepositoryImpl implements BorrowRepository {
     public List<BorrowInfo> findBorrowInfo(Integer readerId, Integer index, int limit) {
         Connection connection = JDBCTools.getConnection();
         String sql = "select br.id,b.name,b.author,b.publish,br.borrowtime,br.returntime,r.name,r.tel,r.cardid,br.state  from borrow br,reader r,book b where r.id = ? and br.readerid = r.id and br.bookid = b.id limit ?,?;";
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        List<BorrowInfo> borrowInfos = new ArrayList<>();
-        try {
-            statement = connection.prepareStatement(sql);
-            statement.setInt(1, readerId);
-            statement.setInt(2, index);
-            statement.setInt(3, limit);
-            resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                borrowInfos.add(new BorrowInfo(resultSet.getInt(1),
-                        new Book(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4)),
-                        new Reader(resultSet.getString(7), resultSet.getString(8), resultSet.getString(9)),
-                        resultSet.getString(5),
-                        resultSet.getString(6),
-                        resultSet.getInt(10)));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            JDBCTools.release(connection, statement, resultSet);
-        }
-        return borrowInfos;
+        return getBorrowInfos(readerId, index, limit, connection, sql);
     }
 
     @Override
@@ -87,5 +65,79 @@ public class BorrowRepositoryImpl implements BorrowRepository {
             JDBCTools.release(connection, statement, resultSet);
         }
         return count;
+    }
+
+    @Override
+    public List<BorrowInfo> findBorrowByState(Integer state, Integer index, int limit) {
+        Connection connection = JDBCTools.getConnection();
+        String sql = "select br.id,b.name,b.author,b.publish,br.borrowtime,br.returntime,r.name,r.tel,r.cardid,br.state from borrow br,book b,reader r where state = ? and b.id = br.bookid and r.id = br.readerid limit ?,?";
+        return getBorrowInfos(state, index, limit, connection, sql);
+    }
+
+    private List<BorrowInfo> getBorrowInfos(Integer state, Integer index, int limit, Connection connection, String sql) {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<BorrowInfo> list = new ArrayList<>();
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, state);
+            statement.setInt(2, index);
+            statement.setInt(3, limit);
+            resultSet = statement.executeQuery();
+            //循环
+            while (resultSet.next()) {
+                //取出所有的素材
+                list.add(new BorrowInfo(resultSet.getInt(1),
+                        new Book(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4)),
+                        new Reader(resultSet.getString(7), resultSet.getString(8), resultSet.getString(9)),
+                        resultSet.getString(5),
+                        resultSet.getString(6), resultSet.getInt(10)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCTools.release(connection, statement, resultSet);
+        }
+        return list;
+    }
+
+    @Override
+    public int getBorrowCountByState(Integer state) {
+        Connection connection = JDBCTools.getConnection();
+        String sql = "select count(*) from borrow br,book b,reader r where state = ? and b.id = br.bookid and r.id = br.readerid";
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        int count = 0;
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, state);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCTools.release(connection, statement, resultSet);
+        }
+        return count;
+    }
+
+    @Override
+    public void handle(Integer borrowId, Integer state, Integer adminId) {
+        Connection connection = JDBCTools.getConnection();
+        String sql = "update borrow set state = ?,adminid = ? where id = ?";
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, state);
+            statement.setInt(2, adminId);
+            statement.setInt(3, borrowId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCTools.release(connection, statement, null);
+        }
     }
 }

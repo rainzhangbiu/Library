@@ -51,8 +51,9 @@ public class LoginServlet extends HttpServlet {
                 case "admin":
                     Admin admin = (Admin) user;
                     session.setAttribute("admin", admin);
-                    req.getRequestDispatcher("/index.jsp").forward(req, resp);
+                    resp.sendRedirect("/admin?method=findBorrowByState&page=1");
                     break;
+
                 case "reader":
                     Reader reader = (Reader) user;
                     session.setAttribute("reader", reader);

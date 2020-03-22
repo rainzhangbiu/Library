@@ -79,4 +79,40 @@ public class BookServiceImpl implements BookService {
         }
         return pages;
     }
+
+    @Override
+    public List<BorrowInfo> findBorrowByState(Integer state, Integer page) {
+        int index = (page - 1) * LIMIT;
+        return borrowRepository.findBorrowByState(state, index, LIMIT);
+    }
+
+    @Override
+    public int getBorrowCountByState(Integer state) {
+        int count = borrowRepository.getBorrowCountByState(state);
+        // 总页数
+        int pages;
+        if ((count % LIMIT) == 0) {
+            pages = count / 6;
+        } else {
+            pages = count / 6 + 1;
+        }
+        return pages;
+    }
+
+    @Override
+    public int getBorrowPagesByState(Integer state) {
+        int count = borrowRepository.getBorrowCountByState(state);
+        int page = 0;
+        if (count % LIMIT == 0) {
+            page = count / LIMIT;
+        } else {
+            page = count / LIMIT + 1;
+        }
+        return page;
+    }
+
+    @Override
+    public void handleBorrow(Integer borrowId, Integer state, Integer adminId) {
+        borrowRepository.handle(borrowId, state, adminId);
+    }
 }

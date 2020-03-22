@@ -1,6 +1,7 @@
 package club.rain.repository;
 
 import club.rain.entity.BorrowInfo;
+import com.sun.jdi.IntegerType;
 
 import java.util.List;
 
@@ -37,4 +38,31 @@ public interface BorrowRepository {
      * @return 书籍总数
      */
     int getCount(Integer readerId);
+
+    /**
+     * 查询未审核的借阅信息
+     *
+     * @param state 审核状态
+     * @param index 页码
+     * @param limit 每页数据量
+     * @return 返回一个借阅信息集合
+     */
+    List<BorrowInfo> findBorrowByState(Integer state, Integer index, int limit);
+
+    /**
+     * 查询指定审核状态的借阅信息数量
+     *
+     * @param state 审核状态
+     * @return 借阅信息数量
+     */
+    int getBorrowCountByState(Integer state);
+
+    /**
+     * 处理订阅信息
+     *
+     * @param borrowId 借阅信息 id
+     * @param state    借阅状态
+     * @param adminId  处理者 id
+     */
+    void handle(Integer borrowId, Integer state, Integer adminId);
 }
